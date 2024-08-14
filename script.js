@@ -1,41 +1,43 @@
 
-let para = document.getElementById("para")
- function currentTime(){
-   let date = new Date()
-   
-    let hour = date.getHours()
-    let min = date.getMinutes()
-    min = min < 9 ? "0"+min : min
-    let sec = date.getSeconds()
-    sec = sec < 9 ? "0" + sec : sec 
+//your JS code here. If required.
+let para = document.querySelector("#timer");
 
-    let am_pm;
+function currentTime(){
+    let date = new Date(); // Declare date object
+    let hour = date.getHours();
+    let min = date.getMinutes();
+    let sec = date.getSeconds();
+    let day = date.getDate(); // Use getDate() instead of getDay()
+    let month = date.getMonth() + 1; // Use getMonth() and add 1
+    let year = date.getFullYear();
+    let arrayOfTime = convertTime(hour, min, sec);
+    for(let i=0; i<=2; i++){
+        arrayOfTime[i]=addZero(arrayOfTime[i]);
+    }
+    let formattedTime = `${arrayOfTime[0]}:${arrayOfTime[1]}:${arrayOfTime[2]} ${arrayOfTime[3]}` // Rename the variable to avoid name clash
 
-if(hour == 0){
-    hour = 12;
-    am_pm = "AM"
-}
-else if(hour > 12) {
-     hour -= 12
-     am_pm = "PM"
-}
-else if(hour == 12){
-     am_pm = "PM"
-}
-else if(hour < 12){
-    am_pm = "AM"
+    para.innerHTML =`${month}/ ${day}/ ${year}, ${formattedTime}`;
 }
 
+setInterval(currentTime,1000);
 
-    let day = date.getDay()
-    let month = date.getMonth()-1
-    let year = date.getFullYear()
-    
-
-
-para.innerText = 
-` ${month}/${day}/${year} , ${hour}:${min}:${sec} ${am_pm}
-`
+function convertTime(hr, min, sec){
+    if(hr>12){
+        hr=hr-12;
+        return [hr,min,sec,"PM"];
+    } else if(hr==0){
+        return [12,min,sec,"AM"];
+    } else if(hr<12){
+        return [hr,min,sec,"AM"];
+    } else if(hr==12){
+        return [hr,min,sec,"PM"];
+    }
 }
 
-setInterval(currentTime,1000)
+function addZero(k){
+    if(k<10){
+        return "0"+k;
+    } else {
+        return k;
+    }
+}
